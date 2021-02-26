@@ -1,0 +1,18 @@
+doctype html
+html(lang='pl')
+  include common/header.jade
+  +head("Twój plan")
+  body 
+  if category 
+    for item in category
+      tr(id=item)
+        td
+         span #{item}
+        td
+          a(href="/user/" + item) #{item}
+        td 
+  if content 
+    h1(style="color:white;") #{content}
+  include common/footer.jade
+    +footer()
+    script(src='javascripts/main.js')

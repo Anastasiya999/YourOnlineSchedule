@@ -1,0 +1,31 @@
+doctype html
+html(lang='pl')
+  include ../common/header.jade
+  +head("Sign up to Generate your plan")
+  body
+    header
+      .container.mt-5
+        .row
+          .col-sm-12.offset-md-2.col-md-8
+            .jumbotron
+              h2.text-center Sign up
+              .row
+                .col-sm-12.col-md-12
+                  form(action='/signup', method='POST')
+                    div.formgroup
+                      label.small.mb-1.mt-3 Login:
+                      input(placeholder='Please enter your login', required=true, name='login', type='login', value=formData.email).form-control
+                      if (errors && errors.email)
+                        p.small.text-danger #{errors.email}
+                      label.small.mb-1.mt-3 Password:
+                      input(placeholder='New Password',required=true, name='password', type='password', value='').form-control
+                      if (errors && errors.password)
+                        p.small.text-danger #{errors.password}
+                      button.mt-3.btn.btn-submit(type='submit') Sign up
+                      if (errors && errors.msg)
+                        p.small.text-danger #{errors.msg}
+                      p.mt-2.mb-0
+                        | Already have an account? #[a(href="/plan/login") Log in here].
+
+    include ../common/footer.jade
+    +footer()

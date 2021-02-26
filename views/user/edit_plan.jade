@@ -1,0 +1,98 @@
+doctype html
+html(lang='pl')
+  include ../common/header.jade
+  +head("Plan")
+  nav.navbar.navbar-expand
+    .collapse.navbar-collapse
+      ul.navbar-nav.mr-auto
+        li.nav-item
+          a.nav-link.white(href="/") Główna
+  body()
+    div(class="container")
+      section(class="align-items-center", id="plan", style="padding:5%;")
+        form(action='/plan/'+ user_id +'/edit', method='POST', id="plan_form") 
+          .form-row
+            .col-md-4 
+              select(class="custom-select",name="plan_course",id="plan_course")
+                option(selected, value="0") Kierunek 
+                option(value="Informatyka") Informatyka 
+                option(value="Filologia Angielska",disabled) Filologia Angielska
+            .col-md-4
+              select(class="custom-select",name="plan_semester",id="plan_semester",onchange=`changeSelectPlan('${user_id}')`) 
+                option(selected, value="0") Semestr
+                option(value="1") 1 
+                option(value="2") 2
+                option(value="3") 3
+                option(value="4") 4
+                option(value="5") 5
+            .col-md-4
+              select(class="custom-select",name="plan_subjects",id="plan_subjects") 
+                option(selected, disabled) Przedmioty
+          fieldset.form-row 
+            .row
+              .col-sm-6
+                legend(class="col-form-label col-sm-2 pt-0") 
+                  | Typ zajęć
+              .col-sm-6
+                div(class="custom-control custom-radio custom-control-inline")
+                  input(class="custom-control-input",type="radio" ,value="wykład",name="lecture",id="lecture")
+                  label(class="custom-control-label",for="lecture") wykład 
+                div(class="custom-control custom-radio custom-control-inline")
+                  input(class="custom-control-input",type="radio"  ,value="pracownia", name="lecture",id="class")
+                  label(class="custom-control-label",for="class") ćwiczenia
+          .form-row
+            .col-md-4
+              select(class="custom-select", name="week_day",id="week_day")
+                option(selected, disabled) Dzień tygodnia 
+                option(value="Poniedziałek") Poniedziałek 
+                option(value="Wtorek") Wtorek
+                option(value="Środa") Środa
+                option(value="Czwartek") Czwartek
+                option(value="Piątek") Piątek
+          .form-row 
+            .col-md-4 
+              select(class="custom-select mt-2", name="plan_hour", id="plan_hour")
+                option(selected, disabled) Godzina
+                option(value="8:00") 8:00
+                option(value="9:30") 9:30
+                option(value="11:00") 11:00
+                option(value="12:30") 12:30
+                option(value="14:00") 14:00
+                option(value="15:30") 15:30
+                option(value="17:00") 17:00
+                option(value="18:30") 18:30
+                option(value="20:00") 20:00
+          .form-row 
+            .col-md-4
+              button(class="btn btn-submit mt-2", type="submit", onclick=`show()`) Dodaj
+        if plan
+          div(class="card mt-4 plan")
+            for day in ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'] 
+              div(class="card-header plan_header") #{day} 
+                .card-body
+                  ul(class="list-group list-group-flush")
+                    for hour in ['8:00','9:30','11:00','12:30','14:00','15:30','17:00','18:30', '20:00'] 
+                      for plan_record in plan
+                        if plan_record.day_of_week==day && plan_record.hour ==hour
+                        
+                          li(class="list-group-item",id=plan_record.plan_id)
+                            div(class="row",style="color:#447A8A;") 
+                              .col-md-4 #{hour}
+                              .col-md-4 #{plan_record.name}
+                              if plan_record.lecture == 0
+                                .col-md-2 ćwiczenia
+                                .col-md-2 
+                                  button(type="button",class="btn btn-labeled btn-primary", onclick=`deletePlanRecord('${plan_record.plan_id}','${user_id}')`)
+                                    span(class="btn-label") 
+                                      i(class="fas fa-trash")
+                              else 
+                                .col-md-2 wykład
+                                .col-md-2 
+                                  button(type="button",class="btn btn-labeled btn-primary", onclick=`deletePlanRecord('${plan_record.plan_id}','${user_id}')`)
+                                    span(class="btn-label") 
+                                      i(class="fas fa-trash")          
+                        
+                          
+    include ../common/footer.jade
+    +footer()
+    script(src="/./javascripts/main.js")

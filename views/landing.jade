@@ -1,0 +1,73 @@
+doctype html
+html(lang='pl')
+  include common/header.jade
+  +head("Twój plan")
+  body
+    header
+      include common/navbar.jade
+      +navbar(user)
+      div(class="container")
+        section(class="align-items-center mt-3", id="subjects", style="padding:5%;")
+          div.header
+            h4 Przedmioty
+          form(action='/subjects', method='POST')
+            .form-row
+              .col-md-4
+                select(class="custom-select", name="course")
+                  option(selected, disabled) Kierunek 
+                  option(value="Informatyka") Informatyka 
+                  option(value="Filologia Angielska", disabled) Filologia Angielska
+              .col-md-4
+                select(class="custom-select", name="semester") 
+                  option(selected, disabled) Semestr
+                  option(value="1") 1
+                  option(value="2") 2
+                  option(value="3") 3
+                  option(value="4") 4
+                  option(value="5") 5
+              .col-md-4 
+                button(class="btn btn-submit", type="submit") Wyświetl
+          if subjects
+            div(class="card mt-2 subjects", ) 
+              div(class="card-header text-center") #{course} semestr #{semester}
+              .card-body 
+                ul(class="list-group list-group-flush")
+                  if subjects 
+                    for subject in subjects 
+                      li.list-group-item.subjects #{subject.name}
+        section(class="align-items-center mt-3", id="group", style="padding:5%;")
+          div.header
+            h4  Moja grupa
+          form(action='/group', method='POST')
+            .form-row 
+              .col-md-3 
+                select(class="custom-select", id="group_course", name="course_group")
+                  option(selected, value="0" ) Kierunek 
+                  option(value="Informatyka") Informatyka 
+                  option(value="Filologia Angielska",disabled) Filologia Angielska
+              .col-md-3
+                select(class="custom-select", id="group_semester", name="semester_group") 
+                  option(selected, value="0") Semestr
+                  option(value="1") 1 
+                  option(value="2") 2
+                  option(value="3") 3
+                  option(value="4") 4
+                  option(value="5") 5
+              .col-md-3
+                select(class="custom-select", id="group_subjects", name="subject_group") 
+                  option(selected, disabled) Przedmioty
+              .col-md-3
+                button(class="btn btn-submit", type="submit") Wyświetl
+          if students
+            div(class="card mt-2 group") 
+              div(class="card-header text-center") #{subject} 
+              .card-body 
+                ul(class="list-group list-group-flush")
+                  if students 
+                    for student in students 
+                      li.list-group-item.group #{student.first_name} #{student.last_name}
+          div(id="show_students",class="mt-2")
+            
+      include common/footer.jade
+      +footer()
+      script(src='javascripts/main.js')
